@@ -1,0 +1,76 @@
+[gd_scene load_steps=10 format=3 uid="uid://bqt7v4mwlf6lw"]
+
+[ext_resource type="Script" path="res://player/player.gd" id="1_kyvgq"]
+[ext_resource type="Texture2D" uid="uid://brxymq54cx5td" path="res://icon.svg" id="2_mvog8"]
+[ext_resource type="Script" path="res://player/fsm.gd" id="3_27a2q"]
+[ext_resource type="PackedScene" uid="uid://cdvcpj3202ade" path="res://states/state_moving.tscn" id="4_gwnrv"]
+[ext_resource type="Script" path="res://player/Idle.gd" id="4_rn7yp"]
+[ext_resource type="Script" path="res://player/looking.gd" id="6_ay20t"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d7mf3"]
+size = Vector2(127, 130)
+
+[sub_resource type="LabelSettings" id="LabelSettings_yc6c4"]
+font_size = 10
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_a674l"]
+polygon = PackedVector2Array(-64, -64, 64, -64, 64, 64, -64, 64)
+
+[node name="Player" type="CharacterBody2D"]
+position = Vector2(169, 117)
+script = ExtResource("1_kyvgq")
+deceleration = 50.0
+acceleration = 50.0
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_mvog8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_d7mf3")
+
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(112, 2)
+
+[node name="Sprite2D" type="Sprite2D" parent="Marker2D"]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_mvog8")
+
+[node name="Fsm" type="Node2D" parent="." node_paths=PackedStringArray("default_state")]
+script = ExtResource("3_27a2q")
+default_state = NodePath("Idle")
+
+[node name="Label" type="Label" parent="Fsm"]
+offset_left = -43.0
+offset_top = 64.0
+offset_right = -3.0
+offset_bottom = 87.0
+scale = Vector2(2.00868, 1.44256)
+text = "Bonjour"
+label_settings = SubResource("LabelSettings_yc6c4")
+
+[node name="Idle" type="Node2D" parent="Fsm" node_paths=PackedStringArray("body")]
+script = ExtResource("4_rn7yp")
+body = NodePath("../..")
+
+[node name="Moving" parent="Fsm" node_paths=PackedStringArray("body") instance=ExtResource("4_gwnrv")]
+body = NodePath("../..")
+
+[node name="Looking" type="Node2D" parent="Fsm" node_paths=PackedStringArray("player")]
+script = ExtResource("6_ay20t")
+player = NodePath("../..")
+
+[node name="test" type="Node2D" parent="Fsm"]
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+target_position = Vector2(1010, 0)
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource("OccluderPolygon2D_a674l")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(458.5, 5.5)
+scale = Vector2(12.1406, 1.35937)
+shadow_enabled = true
+texture = ExtResource("2_mvog8")
