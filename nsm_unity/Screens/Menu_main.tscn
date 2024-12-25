@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://dg8ycv8t0sj6s"]
+
+[ext_resource type="Script" path="res://Screens/menu_main.gd" id="1_oi6sr"]
+
+[node name="MenuMain" type="Control"]
+layout_mode = 3
+anchor_right = 0.472
+anchor_bottom = 0.447
+offset_right = -906.24
+offset_bottom = -482.76
+script = ExtResource("1_oi6sr")
+
+[node name="Start" type="Button" parent="."]
+layout_mode = 0
+offset_left = 122.0
+offset_top = 119.0
+offset_right = 302.0
+offset_bottom = 156.0
+text = "Bonjouuuur"
+
+[connection signal="pressed" from="Start" to="." method="_on_button_pressed"]

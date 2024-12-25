@@ -1,5 +1,5 @@
 extends CharacterBody2D
-
+class_name Player
 
 @export var speed : float = 200
 @export var deceleration : float = 5
@@ -7,9 +7,12 @@ extends CharacterBody2D
 
 @onready var raycast = $RayCast2D
 
+signal found_player
+
 var aim_direction = Vector2(0,-1);
 var direction : Vector2
 var angle : float = 0
+
 func _ready() -> void:
 	$PointLight2D.visible = false
 	direction = Vector2.ZERO
@@ -22,7 +25,9 @@ func _physics_process(_delta: float) -> void:
 
 	if raycast.is_colliding():
 		var target = raycast.get_collider() # A CollisionObject2D.
-		print(target.name)
+		#dprint(target.name)
+		found_player.emit(target)
+		raycast.enabled = false
 
 	var sin_angle = direction.y/direction.length()
 	if(!is_nan(sin_angle)): 
@@ -30,7 +35,7 @@ func _physics_process(_delta: float) -> void:
 			if direction.x > 0.1:
 				angle = 0
 			elif direction.x < -0.1 :
-				print("bonjour")
+				#print("bonjour")
 				angle = -180
 		else:
 			angle = rad_to_deg(asin(sin_angle))
@@ -42,9 +47,9 @@ func _physics_process(_delta: float) -> void:
 	rotation_degrees = angle
 	if direction != Vector2.ZERO :
 		if direction.x < 0:
-			$Sprite2D.scale.y = -1
+			scale.y = -0.25
 		else :
-			$Sprite2D.scale.y = 1
+			scale.y = 0.25
 
 	if(Input.is_action_just_pressed("A")):
 		print('A')

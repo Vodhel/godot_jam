@@ -1,32 +1,25 @@
 extends Node2D
 
-@export var clock_max : int
-var clock_current : int
-@onready var timer = $Timer
-@onready var clock_label = $Label
+var PATH_GAME_HANDLER = "res://main/game_Handler.tscn"
 
-signal night
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	clock_label.text = str(clock_max)
-	clock_current = clock_max
-	timer.start()
+	ResourceLoader.load_threaded_request(PATH_GAME_HANDLER)
+	$MenuMain.start.connect(_on_start)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	pass
 
-
-func _on_timer_timeout() -> void:
-	if clock_current > 0:
-		clock_current -= 1
-		clock_label.text = str(clock_current)
-	else:
-		timer.stop()
-		$CanvasModulate.visible = true
-		night.emit()
-		#clock_current = 3
-		#clock_label.text = str(clock_current)
-		
-	pass # Replace with function body.
+func _on_start() -> void:
+	print("1")
+	var game_handler_scene = ResourceLoader.load_threaded_get(PATH_GAME_HANDLER)
+	print("2")
+	var game_handler = game_handler_scene.instantiate()
+	print("3")
+	$MenuMain.queue_free()
+	print("4")
+	add_child(game_handler)
+	print("5")
+	pass

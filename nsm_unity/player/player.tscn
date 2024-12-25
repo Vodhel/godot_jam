@@ -1,34 +1,37 @@
-[gd_scene load_steps=10 format=3 uid="uid://bqt7v4mwlf6lw"]
+[gd_scene load_steps=11 format=3 uid="uid://bqt7v4mwlf6lw"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_kyvgq"]
+[ext_resource type="Texture2D" uid="uid://cj2m4wlwvp15r" path="res://player/deer1.png" id="2_g6eet"]
 [ext_resource type="Texture2D" uid="uid://brxymq54cx5td" path="res://icon.svg" id="2_mvog8"]
 [ext_resource type="Script" path="res://player/fsm.gd" id="3_27a2q"]
 [ext_resource type="PackedScene" uid="uid://cdvcpj3202ade" path="res://states/state_moving.tscn" id="4_gwnrv"]
 [ext_resource type="Script" path="res://player/Idle.gd" id="4_rn7yp"]
 [ext_resource type="Script" path="res://player/looking.gd" id="6_ay20t"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_d7mf3"]
-size = Vector2(127, 130)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_s1xo0"]
+size = Vector2(47.7745, 7.81904)
 
 [sub_resource type="LabelSettings" id="LabelSettings_yc6c4"]
 font_size = 10
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_a674l"]
-polygon = PackedVector2Array(-64, -64, 64, -64, 64, 64, -64, 64)
+polygon = PackedVector2Array(-41, -66, -34, -92, 57, -82, 45, -56, 48, -31, 17, -28, 17, -9, 28, 25, 55, 65, 49, 68, 26, 46, 11, 39, 7, 59, 10, 80, -1, 83, -6, 60, -19, 49, -39, 48, -56, 61, -66, 62, -51, 12, -17, 5, -6, -29, -27, -40, -33, -54, -0.0885239, -60.9612, 3, -67)
 
 [node name="Player" type="CharacterBody2D"]
-position = Vector2(169, 117)
+position = Vector2(146, 109)
+scale = Vector2(0.25, 0.25)
 script = ExtResource("1_kyvgq")
 deceleration = 50.0
 acceleration = 50.0
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_mvog8")
+texture = ExtResource("2_g6eet")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0.5, 0)
-shape = SubResource("RectangleShape2D_d7mf3")
+position = Vector2(-20, -18)
+scale = Vector2(8.20521, 63.9465)
+shape = SubResource("RectangleShape2D_s1xo0")
 
 [node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2(112, 2)
@@ -42,6 +45,7 @@ script = ExtResource("3_27a2q")
 default_state = NodePath("Idle")
 
 [node name="Label" type="Label" parent="Fsm"]
+visible = false
 offset_left = -43.0
 offset_top = 64.0
 offset_right = -3.0
@@ -64,13 +68,30 @@ player = NodePath("../..")
 [node name="test" type="Node2D" parent="Fsm"]
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
+unique_name_in_owner = true
+visible = false
+enabled = false
 target_position = Vector2(1010, 0)
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+visible = false
+position = Vector2(-1, 6)
 occluder = SubResource("OccluderPolygon2D_a674l")
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
-position = Vector2(458.5, 5.5)
-scale = Vector2(12.1406, 1.35937)
+visible = false
+position = Vector2(623.5, -1.24984)
+scale = Vector2(9.41406, 1.2539)
+range_layer_max = 1
 shadow_enabled = true
 texture = ExtResource("2_mvog8")
+
+[node name="PointLight2D2" type="PointLight2D" parent="."]
+visible = false
+position = Vector2(-4.50001, 1)
+scale = Vector2(0.945312, 1.34375)
+energy = 3.95
+shadow_enabled = true
+texture = ExtResource("2_mvog8")
+
+[connection signal="looking_vote" from="Fsm" to="Fsm/Looking" method="_on_fsm_looking_vote"]

@@ -1,52 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://ckusavcdhnijt"]
+[gd_scene load_steps=3 format=3 uid="uid://b085e7w6lvqfb"]
 
-[ext_resource type="PackedScene" uid="uid://bqt7v4mwlf6lw" path="res://player/player.tscn" id="1_pat1i"]
 [ext_resource type="Script" path="res://main/main.gd" id="1_xvfi3"]
-[ext_resource type="PackedScene" uid="uid://dmw7di8ihg26s" path="res://entities/test_mob.tscn" id="2_rh8wf"]
-[ext_resource type="Texture2D" uid="uid://brxymq54cx5td" path="res://icon.svg" id="3_15bhq"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_mes5d"]
-font_size = 216
+[ext_resource type="PackedScene" uid="uid://dg8ycv8t0sj6s" path="res://Screens/Menu_main.tscn" id="2_sm3je"]
 
 [node name="main" type="Node2D"]
 script = ExtResource("1_xvfi3")
-clock_max = 3
 
-[node name="player" parent="." instance=ExtResource("1_pat1i")]
-position = Vector2(551, 242)
-
-[node name="TestMob" parent="." instance=ExtResource("2_rh8wf")]
-position = Vector2(729, 328)
-
-[node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
-position = Vector2(1383, 315)
-color = Color(0.823073, 0.824084, 0.403643, 1)
-energy = 0.2
-blend_mode = 1
-height = 1.0
-
-[node name="Icon" type="Sprite2D" parent="."]
-modulate = Color(0.403922, 0.403922, 0.403922, 1)
-z_index = -1
-position = Vector2(560, 311)
-scale = Vector2(13, 8)
-texture = ExtResource("3_15bhq")
-
-[node name="CanvasModulate" type="CanvasModulate" parent="."]
-visible = false
-color = Color(0, 0, 0, 1)
-
-[node name="Timer" type="Timer" parent="."]
-
-[node name="Label" type="Label" parent="."]
-offset_left = 20.0
-offset_top = -53.0
-offset_right = 143.0
-offset_bottom = 242.0
-text = "0"
-label_settings = SubResource("LabelSettings_mes5d")
-
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(579, 330)
-
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[node name="MenuMain" parent="." instance=ExtResource("2_sm3je")]

@@ -5,6 +5,9 @@ extends Node2D
 var current_state
 var states : Dictionary = {}
 
+#might be smart to use fsm or player as a hub to reroute internally signals
+signal looking_vote
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	for child in get_children():
@@ -16,9 +19,17 @@ func _ready() -> void:
 		default_state.start()
 		$Label.text = default_state.name
 		current_state = default_state
-	if (get_parent().get_parent().night) :
-		get_parent().get_parent().night.connect(on_child_night)
-		print("signal trouvé !")
+	if (get_tree().get_root().get_node("main/game_handler")) :
+		print("node main trouvé !")
+		if(get_tree().get_root().get_node("main/game_handler").night):		
+			get_tree().get_root().get_node("main/game_handler").night.connect(on_child_night)
+		if(get_tree().get_root().get_node("main/game_handler").voting):		
+			get_tree().get_root().get_node("main/game_handler").voting.connect(on_child_voting)
+			
+	else:
+		print("Can't find game handler !")
+		get_tree().get_root().print_tree()
+		get_tree().quit()
 
 
 	
@@ -65,7 +76,16 @@ func on_child_transition(state, new_state_name : String) -> void:
 	current_state = new_state
 	
 func on_child_night():
-	current_state.exit()
-	current_state = states.get("looking")
-	current_state.start()
+	if current_state != states.get("looking"):
+		current_state.exit()
+		current_state = states.get("looking")
+		current_state.start()
+	else :
+		current_state.exit()
+		current_state = states.get("idle")
+		current_state.start()
 	pass
+	
+func on_child_voting():
+	looking_vote.emit()
+	print("voting !")
